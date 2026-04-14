@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Hide scrollbars on scroll strips */
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Slot-reel spin animation for GameView */
+@keyframes slotSpin {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+/* Vibe preset themes */
+.vibe-neon .room-sidebar  { background: #0d0d1a; border-color: #1e1e3a; }
+.vibe-neon .room-main     { background: #12122a; }
+.vibe-neon .room-sidebar p,
+.vibe-neon .room-sidebar span { color: #c4b5fd; }
+
+.vibe-classic .room-sidebar { background: #132213; border-color: #1e3a1e; }
+.vibe-classic .room-main    { background: #1a2e1a; }
+.vibe-classic .room-sidebar p,
+.vibe-classic .room-sidebar span { color: #bbf7d0; }
+
+.vibe-lucky .room-sidebar  { background: #0f1f05; border-color: #1a3a0a; }
+.vibe-lucky .room-main     { background: #162b07; }
+.vibe-lucky .room-sidebar p,
+.vibe-lucky .room-sidebar span { color: #d9f99d; }
