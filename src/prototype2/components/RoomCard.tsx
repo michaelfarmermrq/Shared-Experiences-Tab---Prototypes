@@ -17,11 +17,11 @@ export default function RoomCard({ room }: Props) {
 
   return (
     <div
-      className="flex-shrink-0 w-[260px] rounded-xl overflow-hidden border border-gray-200 cursor-pointer transition-all duration-150 hover:-translate-y-1 hover:shadow-md"
+      className="flex-shrink-0 w-[320px] rounded-xl overflow-hidden border border-gray-200 cursor-pointer transition-all duration-150 hover:-translate-y-1 hover:shadow-md"
       onClick={handleJoin}
     >
       {/* Top: game thumbnail placeholder */}
-      <div className="h-32 bg-gray-300 relative">
+      <div className="h-[200px] bg-gray-300 relative">
         {/* LIVE badge */}
         <div className="absolute top-2.5 right-2.5 flex items-center gap-1 bg-black/60 rounded-full px-2 py-0.5">
           <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />

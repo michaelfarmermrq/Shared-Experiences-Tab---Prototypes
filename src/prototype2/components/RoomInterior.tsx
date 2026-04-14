@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { mockRooms, mockChatMessages, mockActivity, defaultRoomSettings } from '../data/mockData'
+import { mockRooms, mockMyRooms, createdRooms, mockChatMessages, mockActivity, defaultRoomSettings } from '../data/mockData'
 import type { Player, RoomSettings } from '../data/mockData'
 import RoomSidebar from './RoomSidebar'
 import GameView from './GameView'
@@ -14,7 +14,8 @@ interface Props {
 export default function RoomInterior({ topOffset }: Props) {
   const { id } = useParams<{ id: string }>()
 
-  const room = mockRooms.find(r => r.id === id) ?? mockRooms[0]
+  const allRooms = [...mockRooms, ...mockMyRooms, ...createdRooms]
+  const room = allRooms.find(r => r.id === id) ?? mockRooms[0]
 
   const [playing, setPlaying] = useState(false)
   const [observingPlayer, setObservingPlayer] = useState<Player | null>(null)

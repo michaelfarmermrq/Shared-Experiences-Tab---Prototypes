@@ -3,10 +3,11 @@ import { categories } from '../data/games'
 
 interface Props {
   topOffset: number
+  extraTabs?: string[]
 }
 
-export default function SubNav({ topOffset }: Props) {
-  const tabs = ['All', ...categories.map((c) => c.title)]
+export default function SubNav({ topOffset, extraTabs = [] }: Props) {
+  const tabs = ['All', ...extraTabs, ...categories.map((c) => c.title)]
 
   return (
     <nav

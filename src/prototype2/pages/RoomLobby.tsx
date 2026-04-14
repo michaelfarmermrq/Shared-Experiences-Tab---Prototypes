@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import Header from '../../components/Header'
-import SubNav from '../../components/SubNav'
-import FeaturedCarousel from '../../components/FeaturedCarousel'
-import GameRow from '../../components/GameRow'
-import { categories } from '../../data/games'
-import { mockRooms } from '../data/mockData'
-import RoomCard from '../components/RoomCard'
+import { mockRooms, mockMyRooms, mockFriends, createdRooms } from '../data/mockData'
+import type { Room } from '../data/mockData'
+import LobbySidebar from '../components/LobbySidebar'
+import HappeningNow from '../components/HappeningNow'
+import GameGrid from '../components/GameGrid'
 import CreateRoomModal from '../components/CreateRoomModal'
+
+const publicRooms = mockRooms.filter(r => r.isPublic)
 
 interface Props {
   topOffset: number
@@ -14,47 +15,41 @@ interface Props {
 
 export default function RoomLobby({ topOffset }: Props) {
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const [myRooms, setMyRooms] = useState<Room[]>([...mockMyRooms, ...createdRooms])
+
+  function handleRoomCreated(room: Room) {
+    createdRooms.push(room)
+    setMyRooms(prev => [...prev, room])
+  }
+
+  const headerHeight = 64
+  const contentHeight = `calc(100vh - ${topOffset + headerHeight}px)`
 
   return (
     <div className="bg-white min-h-screen">
       <Header topOffset={topOffset} />
-      <SubNav topOffset={topOffset + 64} />
 
-      <main className="bg-gray-100">
-        <FeaturedCarousel />
+      <div className="flex" style={{ height: contentHeight }}>
+        {/* Left sidebar */}
+        <LobbySidebar
+          myRooms={myRooms}
+          friends={mockFriends}
+          onCreateRoom={() => setShowCreateModal(true)}
+        />
 
-        {/* ── Rooms section ── */}
-        <div className="pt-5 pb-1">
-          {/* Section header */}
-          <div className="flex items-center justify-between px-5 mb-3">
-            <h2 className="text-[15px] font-bold text-gray-900">Rooms</h2>
-            <button
-              onClick={() => setShowCreateModal(true)}
-              className="text-xs font-semibold text-[#0A2ECB] hover:opacity-70 transition-opacity"
-            >
-              + Create Room
-            </button>
-          </div>
-
-          {/* Horizontal scroll strip */}
-          <div className="flex gap-3 overflow-x-auto scrollbar-hide px-5 pb-1">
-            {mockRooms.map(room => (
-              <RoomCard key={room.id} room={room} />
-            ))}
-          </div>
-        </div>
-
-        {/* ── Game rows (same as P1) ── */}
-        {categories.map((category) => (
-          <GameRow key={category.id} category={category} />
-        ))}
-
-        <div className="pb-8" />
-      </main>
+        {/* Main area */}
+        <main className="flex-1 overflow-y-auto bg-gray-50 p-6 space-y-8">
+          <HappeningNow rooms={publicRooms} />
+          <GameGrid />
+        </main>
+      </div>
 
       {/* Create Room modal */}
       {showCreateModal && (
-        <CreateRoomModal onClose={() => setShowCreateModal(false)} />
+        <CreateRoomModal
+          onClose={() => setShowCreateModal(false)}
+          onRoomCreated={handleRoomCreated}
+        />
       )}
     </div>
   )

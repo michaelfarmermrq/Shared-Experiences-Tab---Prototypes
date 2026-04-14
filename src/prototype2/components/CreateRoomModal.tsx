@@ -1,16 +1,20 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { XMarkIcon, ClipboardDocumentIcon, CheckIcon } from '@heroicons/react/24/outline'
 import { availableGames } from '../data/mockData'
+import type { Room } from '../data/mockData'
 
 interface Props {
   onClose: () => void
+  onRoomCreated: (room: Room) => void
 }
 
 type Step = 'form' | 'success'
 type Privacy = 'public' | 'private'
 
-export default function CreateRoomModal({ onClose }: Props) {
+const charms = ['🍀', '🎲', '🌙', '🔥', '💎', '🎰', '⭐', '🦄']
+
+export default function CreateRoomModal({ onClose, onRoomCreated }: Props) {
   const navigate = useNavigate()
   const [step, setStep] = useState<Step>('form')
   const [name, setName] = useState('')
@@ -19,12 +23,33 @@ export default function CreateRoomModal({ onClose }: Props) {
   const [password, setPassword] = useState('')
   const [copied, setCopied] = useState(false)
 
-  const fakeLink = 'mrq.com/room/abc123'
+  const createdRoom = useRef<Room | null>(null)
 
   function handleCreate() {
     if (!name.trim()) return
+
+    const slug = name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+    const charm = charms[Math.floor(Math.random() * charms.length)]
+
+    const room: Room = {
+      id: slug || `room-${Date.now()}`,
+      name: name.trim(),
+      game,
+      host: 'Michael',
+      isPublic: privacy === 'public',
+      maxPlayers: 8,
+      luckyCharm: charm,
+      players: [
+        { name: 'Michael', initials: 'M', netWinnings: 0, game },
+      ],
+    }
+
+    createdRoom.current = room
+    onRoomCreated(room)
     setStep('success')
   }
+
+  const fakeLink = `mrq.com/room/${createdRoom.current?.id ?? 'abc123'}`
 
   function handleCopy() {
     setCopied(true)
@@ -33,7 +58,9 @@ export default function CreateRoomModal({ onClose }: Props) {
 
   function handleEnterRoom() {
     onClose()
-    navigate('/prototype/2/room/book-of-dead')
+    if (createdRoom.current) {
+      navigate(`/prototype/2/room/${createdRoom.current.id}`)
+    }
   }
 
   return (

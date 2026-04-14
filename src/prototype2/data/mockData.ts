@@ -101,6 +101,37 @@ export const mockRooms: Room[] = [
   },
 ]
 
+export const mockMyRooms: Room[] = [
+  {
+    id: 'lucky-lounge',
+    name: "Michael's Lucky Lounge",
+    game: 'Book of Oz',
+    host: 'Michael',
+    isPublic: false,
+    maxPlayers: 6,
+    luckyCharm: '🍀',
+    players: [
+      { name: 'Michael', initials: 'M', netWinnings: 8.50, game: 'Book of Oz' },
+    ],
+  },
+  {
+    id: 'late-night-spins',
+    name: 'Late Night Spins',
+    game: 'Crash',
+    host: 'Michael',
+    isPublic: false,
+    maxPlayers: 4,
+    luckyCharm: '🌙',
+    players: [
+      { name: 'Michael', initials: 'M', netWinnings: 2.00, game: 'Crash' },
+      { name: 'Jamie', initials: 'J', netWinnings: -1.50, game: 'Crash' },
+    ],
+  },
+]
+
+// Dynamically created rooms get pushed here so both the lobby and room interior can find them
+export const createdRooms: Room[] = []
+
 export const mockChatMessages: ChatMessage[] = [
   { id: '1', player: 'Michael', initials: 'M', text: 'Just hit a bonus round! 🎉', time: '2m ago' },
   { id: '2', player: 'Sarah', initials: 'S', text: 'Nice one! I keep missing the scatter', time: '2m ago' },
@@ -120,6 +151,21 @@ export const mockActivity: ActivityEvent[] = [
   { id: '4', player: 'Sarah', initials: 'S', game: 'Book of the Dead', amount: 22.00, time: '7m ago' },
   { id: '5', player: 'Dan', initials: 'D', game: 'Wolf Gold', amount: 30.00, time: '9m ago' },
   { id: '6', player: 'Alex', initials: 'A', game: 'Goosicorn Racing', amount: 15.00, time: '12m ago' },
+]
+
+export interface Friend {
+  name: string
+  initials: string
+  status: 'in-room' | 'playing' | 'online'
+  roomName?: string
+  game?: string
+}
+
+export const mockFriends: Friend[] = [
+  { name: 'Sarah', initials: 'S', status: 'in-room', roomName: 'Book of the Dead Room', game: 'Book of the Dead' },
+  { name: 'Jamie', initials: 'J', status: 'in-room', roomName: 'Late Night Spins', game: 'Crash' },
+  { name: 'Emma', initials: 'E', status: 'playing', game: 'Fishin Frenzy' },
+  { name: 'Luke', initials: 'L', status: 'online' },
 ]
 
 export interface RoomSettings {
