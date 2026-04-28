@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import PrototypeSwitcher from './components/PrototypeSwitcher'
 import Prototype1 from './prototypes/Prototype1'
 import Prototype2 from './prototypes/Prototype2'
+import Storyboard from './prototype2-test/Storyboard'
 
 const SWITCHER_OPEN_HEIGHT = 40
 const SWITCHER_CLOSED_HEIGHT = 20
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/" element={<Navigate to="/prototype/1" replace />} />
         <Route path="/prototype/1" element={<Prototype1 topOffset={switcherHeight} />} />
         <Route path="/prototype/2/*" element={<Prototype2 topOffset={switcherHeight} />} />
+        <Route path="/prototype/2-test" element={<Storyboard topOffset={switcherHeight} />} />
       </Routes>
     </div>
   )

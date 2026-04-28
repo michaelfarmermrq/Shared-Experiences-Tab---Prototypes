@@ -5,6 +5,7 @@ import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/outline'
 const prototypes = [
   { path: '/prototype/1', label: 'Prototype 1' },
   { path: '/prototype/2', label: 'Prototype 2' },
+  { path: '/prototype/2-test', label: 'Storyboards' },
 ]
 
 interface Props {
