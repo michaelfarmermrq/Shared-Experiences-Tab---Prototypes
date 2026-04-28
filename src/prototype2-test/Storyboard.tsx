@@ -335,12 +335,12 @@ export default function Storyboard({ topOffset }: Props) {
         {/* ─── Arena storyboard ───────────────────────────────────────── */}
         <FlowAccordion
           title="Flow D · Arena"
-          subtitle="Team-based competition. Players are auto-assigned to a team for the season; every game contributes points to a shared leaderboard."
+          subtitle="Team-based competition. Players are auto-assigned to a team for the season; daily quests + every game played feed a shared leaderboard."
         >
           {/* 1. Discover Arena */}
           <Panel
             index={1}
-            total={6}
+            total={8}
             showCaption={showCaptions}
             title="Discovering Arena"
             caption="Sarah opens MrQ and meets Arena for the first time — the new Shared tab kicks off with a season intro."
@@ -351,7 +351,7 @@ export default function Storyboard({ topOffset }: Props) {
           {/* 2. Team assignment */}
           <Panel
             index={2}
-            total={6}
+            total={8}
             showCaption={showCaptions}
             title="You're on Team Volt"
             caption="MrQ assigns her to Team Volt for the season — no choice, locked in. The matchmaking explains the why."
@@ -362,7 +362,7 @@ export default function Storyboard({ topOffset }: Props) {
           {/* 3. Three ways to score */}
           <Panel
             index={3}
-            total={6}
+            total={8}
             showCaption={showCaptions}
             title="Three ways to score"
             caption="She learns how to contribute — boosted games, live events, climbing the ladder. Plus 1,000 starter points dropped onto Volt's total."
@@ -373,18 +373,29 @@ export default function Storyboard({ topOffset }: Props) {
           {/* 4. Arena hub */}
           <Panel
             index={4}
-            total={6}
+            total={8}
             showCaption={showCaptions}
             title="The Arena hub"
-            caption="The dashboard: live team scoreboard, her contribution and rank, eligible games to play right now."
+            caption="The dashboard: live team scoreboard, her contribution and rank, today's daily quests, eligible games to play right now."
           >
             <ArenaHubWireframe />
           </Panel>
 
-          {/* 5. Playing an eligible game */}
+          {/* 5. Daily quests */}
           <Panel
             index={5}
-            total={6}
+            total={8}
+            showCaption={showCaptions}
+            title="Today's daily quests"
+            caption="A fresh set of quests every day — each one is points for Volt. Some take a single spin, others take an evening."
+          >
+            <ArenaDailyQuestsWireframe />
+          </Panel>
+
+          {/* 6. Playing an eligible game */}
+          <Panel
+            index={6}
+            total={8}
             showCaption={showCaptions}
             title="Playing for the team"
             caption="She plays an eligible game — the team standing follows her into the game so every spin feels tied to Volt's score."
@@ -392,15 +403,26 @@ export default function Storyboard({ topOffset }: Props) {
             <ArenaInGameWireframe />
           </Panel>
 
-          {/* 6. Team standing moment */}
+          {/* 7. Team standing moment */}
           <Panel
-            index={6}
-            total={6}
+            index={7}
+            total={8}
             showCaption={showCaptions}
             title="Volt's up — hold it"
             caption="A live update lands while she's in the app — Volt is ahead by 16k. The kind of moment that pulls her back tomorrow."
           >
             <ArenaWinningWireframe />
+          </Panel>
+
+          {/* 8. Prize earned */}
+          <Panel
+            index={8}
+            total={8}
+            showCaption={showCaptions}
+            title="Volt wins — your prize"
+            caption="The day ends, Volt held the lead. Sarah's reward is scaled by how much she contributed — bonus points and free spins land in her wallet."
+          >
+            <ArenaPrizeWireframe />
           </Panel>
         </FlowAccordion>
       </div>
@@ -1088,11 +1110,11 @@ function BroadcastingWireframe() {
 
 /* ─── Arena wireframes (mobile-shaped, dark themed) ───────────────────── */
 
-/** Phone-shaped frame. Renders centered in the panel with breathing room. */
+/** Phone-shaped frame. Renders centered in the panel with a soft drop shadow. */
 function MobileFrame({ children }: { children: ReactNode }) {
   return (
-    <div className="flex-1 flex items-center justify-center bg-gray-100 px-6 py-3 min-h-0">
-      <div className="h-full aspect-[9/19.5] rounded-[1.5rem] border-[5px] border-gray-800 bg-gray-950 overflow-hidden flex flex-col shadow-md">
+    <div className="flex-1 flex items-center justify-center px-6 py-4 min-h-0">
+      <div className="h-full aspect-[9/19.5] rounded-[1.75rem] border-[6px] border-gray-900 bg-gray-950 overflow-hidden flex flex-col shadow-[0_20px_50px_-12px_rgba(0,0,0,0.25)]">
         {/* iOS status bar */}
         <div className="h-5 flex items-center justify-between px-4 flex-shrink-0">
           <span className="text-[8px] font-semibold text-white">9:41</span>
@@ -1382,17 +1404,45 @@ function ArenaHubWireframe() {
             RANK <span className="text-gray-700">1.4%</span> ON VOLT · #312 OVERALL
           </div>
         </div>
-        {/* Eligible games grid */}
-        <div className="grid grid-cols-2 gap-1.5">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div
-              key={i}
-              className={[
-                'aspect-square rounded-md',
-                i === 2 ? 'bg-gray-300' : 'bg-gray-800',
-              ].join(' ')}
+        {/* Daily quests preview */}
+        <div className="rounded-xl bg-gray-800 p-2.5 space-y-1.5 border border-gray-700">
+          <div className="flex items-center justify-between">
+            <div className="text-[7px] tracking-wider uppercase text-gray-400 font-bold">
+              Daily quests · 1 of 3
+            </div>
+            <div className="text-[7px] text-gray-500">View all →</div>
+          </div>
+          <div className="space-y-1">
+            <CompactQuestRow
+              title="Spin Buffalo Bill's 50×"
+              progress={64}
+              progressText="32/50"
+              points="+500"
             />
-          ))}
+            <CompactQuestRow
+              title="Win a bonus on any slot"
+              progress={0}
+              progressText="0/1"
+              points="+1,000"
+            />
+          </div>
+        </div>
+        {/* Eligible games grid */}
+        <div>
+          <div className="text-[7px] tracking-wider uppercase text-gray-500 font-bold mb-1.5">
+            Eligible games
+          </div>
+          <div className="grid grid-cols-3 gap-1.5">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className={[
+                  'aspect-square rounded-md',
+                  i === 2 ? 'bg-gray-300' : 'bg-gray-800',
+                ].join(' ')}
+              />
+            ))}
+          </div>
         </div>
       </div>
       <ArenaBottomNav active="Arena" />
@@ -1429,6 +1479,218 @@ function ArenaInGameWireframe() {
       {/* Team standing strip — keeps Arena visible mid-game */}
       <div className="px-3 py-2 bg-gray-900 border-t border-gray-800 flex-shrink-0">
         <TeamScoreboard volt="312,109" shock="248,125" progress={56} compact />
+      </div>
+      <ArenaBottomNav active="Arena" />
+    </MobileFrame>
+  )
+}
+
+/** Compact quest row used inside the hub's Daily Quests preview card. */
+function CompactQuestRow({
+  title,
+  progress,
+  progressText,
+  points,
+}: {
+  title: string
+  progress: number
+  progressText: string
+  points: string
+}) {
+  return (
+    <div className="flex items-center gap-2">
+      <div className="flex-1 min-w-0">
+        <div className="flex justify-between items-baseline gap-2 mb-0.5">
+          <div className="text-[8px] text-gray-200 truncate">{title}</div>
+          <div className="text-[7px] text-gray-500 flex-shrink-0">{progressText}</div>
+        </div>
+        <div className="h-0.5 bg-gray-700 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-gray-300 rounded-full"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      </div>
+      <div className="text-[7px] text-gray-200 font-bold flex-shrink-0">{points}</div>
+    </div>
+  )
+}
+
+/** Daily Quests dedicated panel — full list of today's quests. */
+function ArenaDailyQuestsWireframe() {
+  const quests = [
+    {
+      title: "Spin Buffalo Bill's 50 times",
+      progress: 64,
+      progressText: '32 / 50',
+      points: '+500 pts',
+      done: false,
+    },
+    {
+      title: 'Win a bonus on any slot',
+      progress: 0,
+      progressText: '0 / 1',
+      points: '+1,000 pts',
+      done: false,
+    },
+    {
+      title: 'Play 3 different games',
+      progress: 33,
+      progressText: '1 / 3',
+      points: '+250 pts',
+      done: false,
+    },
+    {
+      title: 'Place a Live Casino bet',
+      progress: 100,
+      progressText: 'Done',
+      points: '+150 pts',
+      done: true,
+    },
+  ]
+  return (
+    <MobileFrame>
+      <ArenaAppHeader />
+      <div className="px-3 pb-2 flex items-center gap-2 flex-shrink-0">
+        <div className="w-3 h-3 rounded bg-gray-700 flex-shrink-0" />
+        {['Dashboard', 'Games', 'Live Battles', 'Rooms', 'Lea'].map((t, i) => (
+          <div
+            key={t}
+            className={[
+              'text-[8px] font-semibold whitespace-nowrap',
+              i === 0
+                ? 'text-white border-b-2 border-gray-300 pb-0.5'
+                : 'text-gray-500',
+            ].join(' ')}
+          >
+            {t}
+          </div>
+        ))}
+      </div>
+      <div className="flex-1 px-3 pb-2 overflow-hidden flex flex-col">
+        <div className="flex items-baseline justify-between mb-2">
+          <div>
+            <div className="text-[8px] tracking-widest font-bold uppercase text-gray-400">
+              Daily quests
+            </div>
+            <div className="text-[16px] font-extrabold text-white leading-tight">
+              Today's quests
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-[7px] tracking-wider uppercase text-gray-500 font-bold">
+              Earned
+            </div>
+            <div className="text-[12px] font-extrabold text-white leading-tight">
+              150
+            </div>
+          </div>
+        </div>
+        <div className="space-y-1.5 flex-1 overflow-hidden">
+          {quests.map((q) => (
+            <div
+              key={q.title}
+              className={[
+                'rounded-lg px-2.5 py-2 border',
+                q.done
+                  ? 'bg-gray-700 border-gray-600'
+                  : 'bg-gray-800 border-gray-700',
+              ].join(' ')}
+            >
+              <div className="flex items-center justify-between gap-2 mb-1">
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <div
+                    className={[
+                      'w-3 h-3 rounded-full border flex items-center justify-center text-[8px] flex-shrink-0',
+                      q.done
+                        ? 'bg-gray-200 border-gray-200 text-gray-800 font-bold'
+                        : 'border-gray-500 text-transparent',
+                    ].join(' ')}
+                  >
+                    ✓
+                  </div>
+                  <div
+                    className={[
+                      'text-[10px] font-semibold truncate',
+                      q.done ? 'text-gray-400 line-through' : 'text-white',
+                    ].join(' ')}
+                  >
+                    {q.title}
+                  </div>
+                </div>
+                <div className="text-[8px] font-bold text-gray-200 flex-shrink-0">
+                  {q.points}
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="flex-1 h-1 bg-gray-700 rounded-full overflow-hidden">
+                  <div
+                    className={[
+                      'h-full rounded-full',
+                      q.done ? 'bg-gray-300' : 'bg-gray-400',
+                    ].join(' ')}
+                    style={{ width: `${q.progress}%` }}
+                  />
+                </div>
+                <div className="text-[7px] text-gray-500 font-semibold flex-shrink-0">
+                  {q.progressText}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="text-[8px] text-gray-500 text-center mt-2">
+          Quests reset at midnight · Points feed into Volt's total
+        </div>
+      </div>
+      <ArenaBottomNav active="Arena" />
+    </MobileFrame>
+  )
+}
+
+/** Prize celebration — Volt won the day, you got a reward. */
+function ArenaPrizeWireframe() {
+  return (
+    <MobileFrame>
+      <ArenaAppHeader />
+      <div className="flex-1 px-4 flex flex-col items-center justify-center text-center gap-3">
+        <div className="text-[8px] tracking-widest font-bold uppercase text-gray-400">
+          Yesterday's battle
+        </div>
+        {/* Trophy / medal */}
+        <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-3xl text-gray-800">
+          ★
+        </div>
+        <div>
+          <div className="text-[24px] font-extrabold text-white leading-[1.05] tracking-tight">
+            Volt wins!
+          </div>
+          <div className="text-[10px] text-gray-400 mt-1">
+            612,440 vs Shock 524,201
+          </div>
+        </div>
+        {/* Prize card */}
+        <div className="w-full rounded-xl bg-gray-800 border border-gray-700 px-3 py-3 space-y-2">
+          <div className="text-[7px] tracking-wider uppercase text-gray-500 font-bold text-left">
+            Your reward
+          </div>
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <div className="text-[10px] text-gray-200">Bonus points</div>
+              <div className="text-[12px] font-extrabold text-white">+2,500</div>
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="text-[10px] text-gray-200">Free spins</div>
+              <div className="text-[12px] font-extrabold text-white">50</div>
+            </div>
+          </div>
+          <div className="text-[7px] text-gray-500 text-left">
+            Scaled by your contribution: <span className="text-gray-300">1.4% of Volt</span>
+          </div>
+        </div>
+        <div className="w-full h-9 rounded-full bg-gray-200 text-gray-900 flex items-center justify-center text-[12px] font-bold">
+          Claim your prize →
+        </div>
       </div>
       <ArenaBottomNav active="Arena" />
     </MobileFrame>
