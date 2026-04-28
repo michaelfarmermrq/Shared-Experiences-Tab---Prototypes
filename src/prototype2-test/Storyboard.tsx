@@ -6,11 +6,24 @@ import {
   Avatar,
   AvatarStack,
   RoomCardStub,
+  StreamCardStub,
   ChatLine,
   SlotReels,
   Block,
   WireSectionTitle,
 } from './parts'
+
+const STREAMING_NAV = [
+  { label: 'Home', active: true },
+  { label: 'Wallet' },
+  { label: 'Go Live' },
+]
+
+const STREAMING_NAV_GO_LIVE = [
+  { label: 'Home' },
+  { label: 'Wallet' },
+  { label: 'Go Live', active: true },
+]
 
 interface Props {
   topOffset: number
@@ -255,6 +268,67 @@ export default function Storyboard({ topOffset }: Props) {
               gameState="playing"
               gameLabel="Mike is playing — Book of Dead"
             />
+          </Panel>
+        </FlowAccordion>
+
+        {/* ─── Streaming storyboard ───────────────────────────────────── */}
+        <FlowAccordion
+          title="Flow C · Streaming"
+          subtitle="Players broadcast their gameplay to an audience — Twitch-style. Viewers watch live; streamers can share their game."
+        >
+          {/* 1. Browse streams */}
+          <Panel
+            index={1}
+            total={5}
+            showCaption={showCaptions}
+            title="Browsing live streams"
+            caption="Sarah opens the Live tab and sees players streaming right now — sorted by category."
+          >
+            <StreamingLobbyWireframe />
+          </Panel>
+
+          {/* 2. Watching a streamer */}
+          <Panel
+            index={2}
+            total={5}
+            showCaption={showCaptions}
+            title="Watching a streamer"
+            caption="She picks a stream and lands inside — the streamer fills the screen, with the viewer count up top."
+          >
+            <StreamWatchingWireframe />
+          </Panel>
+
+          {/* 3. Watching gameplay */}
+          <Panel
+            index={3}
+            total={5}
+            showCaption={showCaptions}
+            title="Watching them play"
+            caption="The streamer shares their game — Sarah sees their gameplay in real time with the streamer's cam in the corner."
+          >
+            <StreamGameplayWireframe />
+          </Panel>
+
+          {/* 4. Go Live setup */}
+          <Panel
+            index={4}
+            total={5}
+            showCaption={showCaptions}
+            title="Setting up your stream"
+            caption="Mike decides to stream — he sets a title, picks a category, chooses an accent colour."
+          >
+            <GoLiveSetupWireframe />
+          </Panel>
+
+          {/* 5. Streamer broadcasting */}
+          <Panel
+            index={5}
+            total={5}
+            showCaption={showCaptions}
+            title="Going live"
+            caption="Mike's broadcast is live — his cam is on, viewers are joining, and he can see the count tick up."
+          >
+            <BroadcastingWireframe />
           </Panel>
         </FlowAccordion>
       </div>
@@ -616,6 +690,325 @@ function JoinPrivateWireframe() {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  )
+}
+
+/* ─── Streaming wireframes (dark themed, matches Twitch-style prototype) ─── */
+
+/** Lobby of live streams — dark grid, Twitch-ish. */
+function StreamingLobbyWireframe() {
+  const categories = [
+    { label: 'For You', active: true },
+    { label: 'Followed' },
+    { label: 'Live Casino' },
+    { label: 'Slots Streams' },
+    { label: 'Table Games' },
+    { label: 'Sports Betting' },
+    { label: 'Entertainment' },
+    { label: 'Other' },
+  ]
+  const streams = [
+    { title: 'Mega Jackpot Breaks', streamer: 'BigWinDave', cat: 'Slots Streams', viewers: '340', initials: 'BD' },
+    { title: 'High Roller Roulette', streamer: 'RouletteQueen', cat: 'Live Casino', viewers: '567', initials: 'RQ' },
+    { title: 'Blackjack Marathon', streamer: 'CardShark21', cat: 'Table Games', viewers: '234', initials: 'CS' },
+    { title: 'Poker Night Live', streamer: 'AceHighPro', cat: 'Table Games', viewers: '891', initials: 'AH' },
+    { title: 'Crash & Burn', streamer: 'MoonShot', cat: 'Entertainment', viewers: '1.2k', initials: 'MS' },
+    { title: 'Sports Pick of the Night', streamer: 'OddsMaker', cat: 'Sports Betting', viewers: '478', initials: 'OM' },
+    { title: 'After Hours Freestyle', streamer: 'NightOwl', cat: 'Other', viewers: '162', initials: 'NO' },
+    { title: 'Late Night Slots', streamer: 'SpinKing', cat: 'Slots Streams', viewers: '89', initials: 'SK' },
+  ]
+  return (
+    <div className="flex flex-col flex-1 min-h-0">
+      <HeaderStub nav={STREAMING_NAV} dark />
+      <div className="flex flex-1 min-h-0 bg-gray-900">
+        {/* Sidebar */}
+        <aside className="w-44 border-r border-gray-800 p-3 space-y-3">
+          <div>
+            <div className="text-[10px] text-gray-200 font-semibold">Hello, Player1</div>
+            <div className="text-[9px] text-gray-500">What are we watching?</div>
+          </div>
+          <div className="space-y-0.5">
+            {categories.map((c) => (
+              <div
+                key={c.label}
+                className={[
+                  'flex items-center gap-1.5 px-1.5 py-1 rounded text-[10px]',
+                  c.active ? 'bg-gray-800 text-gray-100 font-semibold' : 'text-gray-400',
+                ].join(' ')}
+              >
+                <span
+                  className={[
+                    'w-1.5 h-1.5 rounded-full',
+                    c.active ? 'bg-gray-300' : 'bg-gray-700',
+                  ].join(' ')}
+                />
+                {c.label}
+              </div>
+            ))}
+          </div>
+        </aside>
+        {/* Main */}
+        <main className="flex-1 p-4 space-y-3 overflow-hidden">
+          <div className="h-14 bg-gray-800 rounded flex items-center justify-center text-[10px] text-gray-500">
+            Promo banner
+          </div>
+          <div>
+            <div className="text-[11px] font-bold text-gray-200 mb-2 tracking-wide">
+              Live Streams · {streams.length} live
+            </div>
+            <div className="grid grid-cols-4 gap-2">
+              {streams.map((s) => (
+                <StreamCardStub
+                  key={s.streamer}
+                  title={s.title}
+                  streamer={s.streamer}
+                  category={s.cat}
+                  viewers={s.viewers}
+                  initials={s.initials}
+                />
+              ))}
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Audience watching a stream — full-screen streamer cam, viewer count in the
+ * info strip. Used when the streamer is on camera but not yet sharing a game.
+ */
+function StreamWatchingWireframe() {
+  return (
+    <div className="flex flex-col flex-1 min-h-0">
+      <HeaderStub nav={STREAMING_NAV} dark />
+      <div className="bg-gray-900 px-4 py-2 flex items-center gap-2 border-b border-gray-800">
+        <Avatar initials="BD" size={20} />
+        <div className="text-[11px] font-semibold text-gray-100">BigWinDave</div>
+        <div className="ml-2 flex items-center gap-1">
+          <div className="text-[8px] font-bold tracking-wider text-white bg-red-700 rounded px-1 py-px">
+            LIVE
+          </div>
+          <div className="text-[10px] text-gray-300">340 watching</div>
+        </div>
+      </div>
+      <div className="flex-1 bg-black flex items-center justify-center relative">
+        <div className="w-40 h-40 rounded-full bg-gray-700" />
+        <div className="absolute bottom-3 left-4 text-[10px] text-gray-400">
+          Mega Jackpot Breaks
+        </div>
+        <div className="absolute bottom-3 right-4 w-6 h-6 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 text-[12px]">
+          ⓧ
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Audience watching gameplay — streamer's screenshare fills the viewport with
+ * the streamer's webcam circle in the corner.
+ */
+function StreamGameplayWireframe() {
+  return (
+    <div className="flex flex-col flex-1 min-h-0">
+      <HeaderStub nav={STREAMING_NAV} dark />
+      <div className="bg-gray-900 px-4 py-2 flex items-center gap-2 border-b border-gray-800">
+        <Avatar initials="BD" size={20} />
+        <div className="text-[11px] font-semibold text-gray-100">BigWinDave</div>
+        <div className="ml-2 flex items-center gap-1">
+          <div className="text-[8px] font-bold tracking-wider text-white bg-red-700 rounded px-1 py-px">
+            LIVE
+          </div>
+          <div className="text-[10px] text-gray-300">412 watching</div>
+        </div>
+        <div className="ml-auto text-[10px] text-gray-400">
+          Sharing — Book of Dead
+        </div>
+      </div>
+      <div className="flex-1 bg-gray-950 flex items-center justify-center relative">
+        {/* Mock gameplay: slot reels in dark style */}
+        <div className="flex gap-3">
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className="w-20 h-28 rounded bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-500 text-3xl"
+            >
+              ?
+            </div>
+          ))}
+        </div>
+        <div className="absolute bottom-3 left-4 text-[10px] text-gray-500">
+          Spin to play
+        </div>
+        {/* Streamer cam in corner */}
+        <div className="absolute bottom-3 right-3 w-20 h-20 rounded-full bg-gray-700 border-2 border-gray-600 flex items-center justify-center text-[10px] text-gray-400 font-semibold">
+          BD
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/** Streamer's pre-broadcast setup form. */
+function GoLiveSetupWireframe() {
+  return (
+    <div className="flex flex-col flex-1 min-h-0">
+      <HeaderStub nav={STREAMING_NAV_GO_LIVE} dark />
+      <div className="flex-1 bg-gray-900 p-6 flex justify-center">
+        <div className="flex gap-6 max-w-3xl w-full">
+          {/* Form column */}
+          <div className="flex-1 space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-full bg-red-700 flex items-center justify-center text-white text-[12px]">
+                ◉
+              </div>
+              <div>
+                <div className="text-sm font-bold text-gray-100">Go Live</div>
+                <div className="text-[10px] text-gray-500">Set up your stream and go live</div>
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <div className="text-[9px] font-semibold tracking-wider uppercase text-gray-500">
+                Stream title
+              </div>
+              <div className="h-8 rounded border border-gray-700 bg-gray-800 flex items-center px-2 text-[11px] text-gray-300">
+                Big Bonus Friday Night
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <div className="text-[9px] font-semibold tracking-wider uppercase text-gray-500">
+                Category
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {['Live Casino', 'Slots Streams', 'Table Games', 'Sports Betting', 'Entertainment', 'Other'].map(
+                  (cat, i) => (
+                    <div
+                      key={cat}
+                      className={[
+                        'h-6 px-2 rounded-full text-[9px] flex items-center',
+                        i === 1
+                          ? 'bg-gray-200 text-gray-900 font-semibold'
+                          : 'bg-gray-800 text-gray-400 border border-gray-700',
+                      ].join(' ')}
+                    >
+                      {cat}
+                    </div>
+                  ),
+                )}
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <div className="text-[9px] font-semibold tracking-wider uppercase text-gray-500">
+                Stream colour
+              </div>
+              <div className="flex gap-1.5">
+                {Array.from({ length: 10 }).map((_, i) => {
+                  const tones = ['bg-gray-300', 'bg-gray-400', 'bg-gray-500', 'bg-gray-600', 'bg-gray-700']
+                  return (
+                    <div
+                      key={i}
+                      className={[
+                        'w-5 h-5 rounded-full',
+                        tones[i % tones.length],
+                        i === 0 ? 'ring-2 ring-white' : '',
+                      ].join(' ')}
+                    />
+                  )
+                })}
+              </div>
+            </div>
+            <div className="h-9 rounded bg-red-900 text-red-100 flex items-center justify-center text-[12px] font-semibold mt-2">
+              ◉ Start Streaming →
+            </div>
+          </div>
+          {/* Preview column */}
+          <div className="w-64 space-y-3">
+            <div className="space-y-1.5">
+              <div className="text-[9px] font-semibold tracking-wider uppercase text-gray-500">
+                Camera preview
+              </div>
+              <div className="aspect-video rounded bg-gray-800 border border-gray-700 flex items-center justify-center relative">
+                <div className="w-12 h-12 rounded-full bg-gray-700" />
+                <div className="absolute top-1.5 left-1.5 text-[8px] font-bold text-white bg-black/60 rounded px-1 py-px">
+                  • Preview
+                </div>
+              </div>
+            </div>
+            <div className="rounded border border-gray-700 bg-gray-800 p-2 space-y-1.5">
+              <div className="text-[9px] font-semibold tracking-wider uppercase text-gray-500">
+                Viewer preview
+              </div>
+              <div className="flex items-center gap-2">
+                <Avatar initials="MK" size={20} />
+                <div className="flex-1 min-w-0">
+                  <div className="text-[10px] font-semibold text-gray-100 truncate">
+                    Big Bonus Friday Nigh…
+                  </div>
+                  <div className="text-[9px] text-gray-500">Slots · 0 viewers</div>
+                </div>
+                <div className="text-[8px] font-bold tracking-wider text-white bg-red-700 rounded px-1 py-px">
+                  LIVE
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/** Streamer broadcasting — their cam centre, viewer count growing, end-stream control. */
+function BroadcastingWireframe() {
+  return (
+    <div className="flex flex-col flex-1 min-h-0">
+      <HeaderStub nav={STREAMING_NAV_GO_LIVE} dark />
+      <div className="flex flex-1 min-h-0 bg-gray-900">
+        {/* Main broadcast area */}
+        <div className="flex-1 relative bg-black flex items-center justify-center">
+          <div className="absolute top-3 left-3 flex items-center gap-1">
+            <div className="text-[9px] font-bold tracking-wider text-white bg-red-700 rounded px-1.5 py-px">
+              LIVE
+            </div>
+          </div>
+          <div className="w-44 h-44 rounded-full bg-gray-700" />
+          <div className="absolute bottom-3 left-4 text-[10px] text-gray-400">
+            Big Bonus Friday Night
+          </div>
+        </div>
+        {/* Streamer side panel */}
+        <aside className="w-56 border-l border-gray-800 p-3 space-y-3">
+          <div className="flex items-center gap-2">
+            <Avatar initials="MK" size={26} />
+            <div>
+              <div className="text-[11px] font-semibold text-gray-100">michaelf</div>
+              <div className="text-[9px] text-gray-500">Big Bonus Friday Night</div>
+            </div>
+          </div>
+          <div className="rounded border border-gray-700 bg-gray-800 p-2.5 space-y-0.5">
+            <div className="text-[9px] font-semibold tracking-wider uppercase text-gray-500">
+              Viewers
+            </div>
+            <div className="text-xl font-bold text-gray-100">128</div>
+            <div className="text-[9px] text-gray-500">↑ growing</div>
+          </div>
+          <div className="rounded border border-gray-700 bg-gray-800 p-2.5 space-y-1.5">
+            <div className="text-[10px] font-bold text-gray-200">Broadcast settings</div>
+            <div className="text-[9px] text-gray-500 leading-snug">
+              RTMP push from OBS or any encoder.
+            </div>
+            <div className="h-6 rounded bg-gray-700 text-gray-200 flex items-center justify-center text-[9px] font-semibold">
+              ◉ Mux stream active
+            </div>
+          </div>
+          <div className="h-7 rounded bg-red-900 text-red-100 flex items-center justify-center text-[10px] font-semibold">
+            ⏹ End Stream
+          </div>
+        </aside>
       </div>
     </div>
   )
