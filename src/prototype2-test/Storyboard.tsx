@@ -47,7 +47,7 @@ export default function Storyboard({ topOffset }: Props) {
               Concept testing — Shared Experiences
             </div>
             <h1 className="text-2xl font-bold text-gray-900">
-              Rooms — concept storyboards
+              Concept storyboards
             </h1>
           </div>
 
@@ -329,6 +329,78 @@ export default function Storyboard({ topOffset }: Props) {
             caption="Mike's broadcast is live — his cam is on, viewers are joining, and he can see the count tick up."
           >
             <BroadcastingWireframe />
+          </Panel>
+        </FlowAccordion>
+
+        {/* ─── Arena storyboard ───────────────────────────────────────── */}
+        <FlowAccordion
+          title="Flow D · Arena"
+          subtitle="Team-based competition. Players are auto-assigned to a team for the season; every game contributes points to a shared leaderboard."
+        >
+          {/* 1. Discover Arena */}
+          <Panel
+            index={1}
+            total={6}
+            showCaption={showCaptions}
+            title="Discovering Arena"
+            caption="Sarah opens MrQ and meets Arena for the first time — the new Shared tab kicks off with a season intro."
+          >
+            <ArenaDiscoveryWireframe />
+          </Panel>
+
+          {/* 2. Team assignment */}
+          <Panel
+            index={2}
+            total={6}
+            showCaption={showCaptions}
+            title="You're on Team Volt"
+            caption="MrQ assigns her to Team Volt for the season — no choice, locked in. The matchmaking explains the why."
+          >
+            <ArenaTeamAssignmentWireframe />
+          </Panel>
+
+          {/* 3. Three ways to score */}
+          <Panel
+            index={3}
+            total={6}
+            showCaption={showCaptions}
+            title="Three ways to score"
+            caption="She learns how to contribute — boosted games, live events, climbing the ladder. Plus 1,000 starter points dropped onto Volt's total."
+          >
+            <ArenaThreeWaysWireframe />
+          </Panel>
+
+          {/* 4. Arena hub */}
+          <Panel
+            index={4}
+            total={6}
+            showCaption={showCaptions}
+            title="The Arena hub"
+            caption="The dashboard: live team scoreboard, her contribution and rank, eligible games to play right now."
+          >
+            <ArenaHubWireframe />
+          </Panel>
+
+          {/* 5. Playing an eligible game */}
+          <Panel
+            index={5}
+            total={6}
+            showCaption={showCaptions}
+            title="Playing for the team"
+            caption="She plays an eligible game — the team standing follows her into the game so every spin feels tied to Volt's score."
+          >
+            <ArenaInGameWireframe />
+          </Panel>
+
+          {/* 6. Team standing moment */}
+          <Panel
+            index={6}
+            total={6}
+            showCaption={showCaptions}
+            title="Volt's up — hold it"
+            caption="A live update lands while she's in the app — Volt is ahead by 16k. The kind of moment that pulls her back tomorrow."
+          >
+            <ArenaWinningWireframe />
           </Panel>
         </FlowAccordion>
       </div>
@@ -1011,5 +1083,376 @@ function BroadcastingWireframe() {
         </aside>
       </div>
     </div>
+  )
+}
+
+/* ─── Arena wireframes (mobile-shaped, dark themed) ───────────────────── */
+
+/** Phone-shaped frame. Renders centered in the panel with breathing room. */
+function MobileFrame({ children }: { children: ReactNode }) {
+  return (
+    <div className="flex-1 flex items-center justify-center bg-gray-100 px-6 py-3 min-h-0">
+      <div className="h-full aspect-[9/19.5] rounded-[1.5rem] border-[5px] border-gray-800 bg-gray-950 overflow-hidden flex flex-col shadow-md">
+        {/* iOS status bar */}
+        <div className="h-5 flex items-center justify-between px-4 flex-shrink-0">
+          <span className="text-[8px] font-semibold text-white">9:41</span>
+          <div className="flex items-center gap-1 text-white text-[8px]">
+            <span>•••</span>
+            <span>▮▮</span>
+          </div>
+        </div>
+        {/* Content */}
+        <div className="flex-1 overflow-hidden flex flex-col">{children}</div>
+        {/* Home indicator */}
+        <div className="h-3 flex items-center justify-center flex-shrink-0">
+          <div className="h-0.5 w-16 rounded-full bg-gray-300" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/** MrQ app header — logo + balance pill + avatar. Used inside MobileFrame. */
+function ArenaAppHeader() {
+  return (
+    <div className="flex items-center justify-between px-3 py-2 flex-shrink-0">
+      <div className="text-[11px] font-bold tracking-tight text-white">MrQ</div>
+      <div className="flex items-center gap-1.5">
+        <div className="px-1.5 py-0.5 bg-gray-800 rounded-md text-[8px] text-white font-semibold flex items-center gap-1">
+          £113.59 <span className="text-gray-400">+</span>
+        </div>
+        <div className="w-5 h-5 rounded-full bg-gray-600" />
+      </div>
+    </div>
+  )
+}
+
+/** Onboarding progress dashes + close button. */
+function OnboardingProgressBar({ active }: { active: number }) {
+  return (
+    <div className="flex items-center gap-1 px-3 pb-2 flex-shrink-0">
+      <div className="flex gap-0.5 flex-1">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div
+            key={i}
+            className={[
+              'flex-1 h-0.5 rounded-full',
+              i < active ? 'bg-gray-300' : 'bg-gray-700',
+            ].join(' ')}
+          />
+        ))}
+      </div>
+      <div className="text-gray-400 text-[10px] leading-none ml-1">×</div>
+    </div>
+  )
+}
+
+/** Bottom MrQ tab bar. */
+function ArenaBottomNav({ active = 'Arena' }: { active?: string }) {
+  const tabs = ['Casino', 'Live', 'Bingo', 'Arena', 'Rewards']
+  return (
+    <div className="flex items-stretch justify-around border-t border-gray-800 px-1 py-1.5 flex-shrink-0 bg-gray-950">
+      {tabs.map((t) => (
+        <div key={t} className="flex flex-col items-center gap-0.5 px-1">
+          <div
+            className={[
+              'w-3 h-3 rounded-sm',
+              t === active ? 'bg-gray-200' : 'bg-gray-700',
+            ].join(' ')}
+          />
+          <div
+            className={[
+              'text-[7px] leading-none',
+              t === active
+                ? 'text-white font-semibold'
+                : 'text-gray-500',
+            ].join(' ')}
+          >
+            {t}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/** Volt vs Shock scoreboard with progress bar. */
+function TeamScoreboard({
+  volt,
+  shock,
+  progress = 65,
+  compact = false,
+}: {
+  volt: string
+  shock: string
+  progress?: number
+  compact?: boolean
+}) {
+  return (
+    <div className={compact ? 'space-y-1' : 'space-y-1.5'}>
+      <div className="flex justify-between items-baseline">
+        <div>
+          <div className="text-[7px] font-bold tracking-wider uppercase text-gray-400">
+            Team Volt
+          </div>
+          <div
+            className={[
+              'font-bold text-white leading-tight',
+              compact ? 'text-[12px]' : 'text-[15px]',
+            ].join(' ')}
+          >
+            {volt}
+          </div>
+        </div>
+        <div className="text-right">
+          <div className="text-[7px] font-bold tracking-wider uppercase text-gray-500">
+            Team Shock
+          </div>
+          <div
+            className={[
+              'font-bold text-gray-400 leading-tight',
+              compact ? 'text-[12px]' : 'text-[15px]',
+            ].join(' ')}
+          >
+            {shock}
+          </div>
+        </div>
+      </div>
+      <div className="relative h-1 rounded-full bg-gray-700 overflow-hidden">
+        <div
+          className="absolute left-0 top-0 h-full bg-gray-300 rounded-full"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+    </div>
+  )
+}
+
+/* ── Arena panels ─────────────────────────────────────────────────────── */
+
+/** 1. Onboarding intro — "Something new just landed" */
+function ArenaDiscoveryWireframe() {
+  return (
+    <MobileFrame>
+      <ArenaAppHeader />
+      <OnboardingProgressBar active={1} />
+      <div className="flex-1 px-4 flex flex-col justify-end pb-8">
+        <div className="text-[8px] tracking-widest font-semibold text-gray-400 uppercase mb-2">
+          Season 01 — Now Live
+        </div>
+        <div className="text-[20px] font-extrabold text-white leading-[1.1] mb-3">
+          Something new<br />
+          just <span className="underline decoration-gray-300 underline-offset-2">landed.</span>
+        </div>
+        <div className="text-[10px] text-gray-300 leading-snug">
+          Say hi to <span className="text-white font-semibold">Arena</span>. Two teams,
+          one season, every game you play counts for your side.
+        </div>
+      </div>
+    </MobileFrame>
+  )
+}
+
+/** 2. Team assignment — "You're on Team Volt" */
+function ArenaTeamAssignmentWireframe() {
+  return (
+    <MobileFrame>
+      <ArenaAppHeader />
+      <OnboardingProgressBar active={3} />
+      <div className="flex-1 px-4 flex flex-col justify-end pb-8">
+        <div className="text-[8px] tracking-widest font-semibold text-gray-400 uppercase mb-2">
+          Your assignment
+        </div>
+        <div className="text-[20px] font-extrabold text-white leading-[1.05] mb-1">
+          You're
+        </div>
+        <div className="text-[20px] font-extrabold text-white leading-[1.05] mb-1">on</div>
+        <div className="text-[28px] font-black text-gray-100 leading-[1] mb-3 tracking-tight">
+          Team Volt
+        </div>
+        <div className="text-[10px] text-gray-300 leading-snug">
+          You are locked in for the whole season. Make Volt proud (or not, we
+          still love you).
+        </div>
+      </div>
+    </MobileFrame>
+  )
+}
+
+/** 3. How you help — three cards */
+function ArenaThreeWaysWireframe() {
+  const ways = [
+    {
+      title: 'Play boosted games',
+      body: "Some give 2x or 3x Team points, we'll flag which.",
+    },
+    {
+      title: 'Join live events',
+      body: 'Head-to-heads, tournaments, group challenges.',
+    },
+    {
+      title: 'Climb the ladder',
+      body: 'Top individuals bank bonus points for Volt.',
+    },
+  ]
+  return (
+    <MobileFrame>
+      <ArenaAppHeader />
+      <OnboardingProgressBar active={5} />
+      <div className="flex-1 px-4 pb-4 flex flex-col">
+        <div className="text-[8px] tracking-widest font-semibold text-gray-400 uppercase mb-2">
+          How you help
+        </div>
+        <div className="text-[22px] font-extrabold text-white leading-[1.05] mb-4">
+          Three ways<br />
+          to <span className="underline decoration-gray-300 underline-offset-2">score.</span>
+        </div>
+        <div className="space-y-2">
+          {ways.map((w) => (
+            <div
+              key={w.title}
+              className="rounded-lg bg-gray-800 px-3 py-2.5 border border-gray-700"
+            >
+              <div className="text-[10px] font-bold text-white leading-tight">
+                {w.title}
+              </div>
+              <div className="text-[8px] text-gray-400 leading-snug mt-0.5">
+                {w.body}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </MobileFrame>
+  )
+}
+
+/** 4. Arena hub — main dashboard */
+function ArenaHubWireframe() {
+  const tabs = ['Dashboard', 'Games', 'Live Battles', 'Rooms', 'Lea']
+  return (
+    <MobileFrame>
+      <ArenaAppHeader />
+      {/* Search + tabs */}
+      <div className="px-3 pb-2 flex items-center gap-2 flex-shrink-0">
+        <div className="w-3 h-3 rounded bg-gray-700 flex-shrink-0" />
+        {tabs.map((t, i) => (
+          <div
+            key={t}
+            className={[
+              'text-[8px] font-semibold whitespace-nowrap',
+              i === 0
+                ? 'text-white border-b-2 border-gray-300 pb-0.5'
+                : 'text-gray-500',
+            ].join(' ')}
+          >
+            {t}
+          </div>
+        ))}
+      </div>
+      {/* Body */}
+      <div className="flex-1 px-3 pb-2 space-y-2 overflow-hidden">
+        {/* Scoreboard card */}
+        <div className="rounded-xl bg-gray-800 p-2.5 space-y-2 border border-gray-700">
+          <TeamScoreboard volt="508,109" shock="248,125" progress={67} />
+          <div className="bg-gray-700 rounded-md text-center py-1 text-[9px] text-white font-semibold">
+            See full scorecard
+          </div>
+        </div>
+        {/* Your contribution card */}
+        <div className="rounded-xl bg-white p-2.5 space-y-1">
+          <div className="text-[7px] tracking-wider uppercase text-gray-500 font-bold">
+            Your contribution
+          </div>
+          <div className="flex items-baseline justify-between">
+            <div className="text-[16px] font-extrabold text-gray-900 leading-tight">
+              3,472
+            </div>
+            <div className="text-[8px] text-gray-500 font-semibold">
+              1.4% OF VOLT
+            </div>
+          </div>
+          <div className="h-0.5 bg-gray-200 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gray-700 rounded-full"
+              style={{ width: '4%' }}
+            />
+          </div>
+          <div className="text-[7px] text-gray-500 font-semibold">
+            RANK <span className="text-gray-700">1.4%</span> ON VOLT · #312 OVERALL
+          </div>
+        </div>
+        {/* Eligible games grid */}
+        <div className="grid grid-cols-2 gap-1.5">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div
+              key={i}
+              className={[
+                'aspect-square rounded-md',
+                i === 2 ? 'bg-gray-300' : 'bg-gray-800',
+              ].join(' ')}
+            />
+          ))}
+        </div>
+      </div>
+      <ArenaBottomNav active="Arena" />
+    </MobileFrame>
+  )
+}
+
+/** 5. Playing an eligible game — with team standing strip */
+function ArenaInGameWireframe() {
+  return (
+    <MobileFrame>
+      <ArenaAppHeader />
+      <div className="flex-1 bg-black flex flex-col items-center justify-center gap-3 px-4">
+        <div className="text-[9px] text-gray-300 font-semibold tracking-wide">
+          Buffalo Bill's Big Bonus
+        </div>
+        <div className="flex gap-1.5">
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className="w-12 h-16 rounded bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-500 text-2xl"
+            >
+              ?
+            </div>
+          ))}
+        </div>
+        <div className="h-7 px-5 bg-gray-200 rounded-full flex items-center text-[10px] font-bold text-gray-900">
+          ▶ Spin
+        </div>
+        <div className="text-[8px] text-gray-500 mt-1">
+          Earning points for Team Volt
+        </div>
+      </div>
+      {/* Team standing strip — keeps Arena visible mid-game */}
+      <div className="px-3 py-2 bg-gray-900 border-t border-gray-800 flex-shrink-0">
+        <TeamScoreboard volt="312,109" shock="248,125" progress={56} compact />
+      </div>
+      <ArenaBottomNav active="Arena" />
+    </MobileFrame>
+  )
+}
+
+/** 6. Volt's up by 16k — the social moment */
+function ArenaWinningWireframe() {
+  return (
+    <MobileFrame>
+      <ArenaAppHeader />
+      <div className="flex-1 px-4 flex flex-col justify-center">
+        <div className="text-[24px] font-extrabold text-white leading-[1.05] tracking-tight">
+          Volt's up by{' '}
+          <span className="text-gray-100">16k</span>
+        </div>
+        <div className="text-[24px] font-extrabold text-white leading-[1.05] tracking-tight">
+          hold it!
+        </div>
+      </div>
+      <div className="px-3 pb-3 flex-shrink-0">
+        <TeamScoreboard volt="308,109" shock="248,125" progress={55} />
+      </div>
+      <ArenaBottomNav active="Arena" />
+    </MobileFrame>
   )
 }
