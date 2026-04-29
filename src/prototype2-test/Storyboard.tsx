@@ -343,7 +343,7 @@ export default function Storyboard({ topOffset }: Props) {
             total={8}
             showCaption={showCaptions}
             title="Discovering Arena"
-            caption="Sarah opens MrQ and meets Arena for the first time — the new Shared tab kicks off with a season intro."
+            caption="Sarah opens the app and meets Arena for the first time — the new Shared tab kicks off with a season intro."
           >
             <ArenaDiscoveryWireframe />
           </Panel>
@@ -354,7 +354,7 @@ export default function Storyboard({ topOffset }: Props) {
             total={8}
             showCaption={showCaptions}
             title="You're on Team Volt"
-            caption="MrQ assigns her to Team Volt for the season — no choice, locked in. The matchmaking explains the why."
+            caption="She's assigned to Team Volt for the season — no choice, locked in. The matchmaking explains the why."
           >
             <ArenaTeamAssignmentWireframe />
           </Panel>
@@ -1134,15 +1134,13 @@ function MobileFrame({ children }: { children: ReactNode }) {
   )
 }
 
-/** MrQ app header — logo + balance pill + avatar. Used inside MobileFrame. */
+/** App header stub — logo placeholder + balance pill + avatar. Used inside MobileFrame. */
 function ArenaAppHeader() {
   return (
     <div className="flex items-center justify-between px-3 py-2 flex-shrink-0">
-      <div className="text-[11px] font-bold tracking-tight text-white">MrQ</div>
+      <div className="w-10 h-2.5 rounded bg-gray-700" />
       <div className="flex items-center gap-1.5">
-        <div className="px-1.5 py-0.5 bg-gray-800 rounded-md text-[8px] text-white font-semibold flex items-center gap-1">
-          £113.59 <span className="text-gray-400">+</span>
-        </div>
+        <div className="w-12 h-3 rounded bg-gray-800" />
         <div className="w-5 h-5 rounded-full bg-gray-600" />
       </div>
     </div>
@@ -1169,7 +1167,7 @@ function OnboardingProgressBar({ active }: { active: number }) {
   )
 }
 
-/** Bottom MrQ tab bar. */
+/** Bottom tab bar. */
 function ArenaBottomNav({ active = 'Arena' }: { active?: string }) {
   const tabs = ['Casino', 'Live', 'Bingo', 'Arena', 'Rewards']
   return (
